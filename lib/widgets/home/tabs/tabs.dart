@@ -1,3 +1,4 @@
+import 'package:blok_p2/widgets/home/tabs/events/events_page.dart';
 import 'package:blok_p2/widgets/home/tabs/organizations/organizations_page.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +16,7 @@ class Tabs {
         serverOnly: true,
       ),
       Tab(
-        page: Text('Events'), //FollowedCalendarsTab(),
+        page: EventsPage(),
         icon: Icon(Icons.event_note),
         label: 'Events',
         serverOnly: false,

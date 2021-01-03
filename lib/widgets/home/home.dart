@@ -40,19 +40,6 @@ class _HomeState extends State<Home> {
         return tabs.item(_tabIndex) == null
             ? Loading
             : Scaffold(
-                // appBar: AppBar(
-                //   title: tabs.item(_tabIndex).title,
-                //   actions: <Widget>[
-                //     if (_tabIndex != 2)
-                //       FlatButton(
-                //           onPressed: () {
-                //             var routes = tabs.floatingRoutes();
-                //             if (routes[_tabIndex] != null)
-                //               Navigator.pushNamed(context, routes[_tabIndex]);
-                //           },
-                //           child: Icon(Icons.add))
-                //   ],
-                // ),
                 body: tabs.item(_tabIndex).page,
                 bottomNavigationBar: BottomNavigationBar(
                   onTap: onTabTap,
