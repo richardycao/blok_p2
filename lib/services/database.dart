@@ -74,11 +74,13 @@ class DatabaseService {
 
   // CREATE user
   Future createUser(String userId,
-      {String displayName = anon_name,
+      {String username,
+      String displayName = anon_name,
       String email = "",
       bool serverEnabled = false}) async {
     await Firestore.instance.collection(USERS).document(userId).setData({
       'displayName': displayName,
+      'username': username ?? userId,
       'email': email,
       'ownedCalendars': {},
       'followedCalendars': {},

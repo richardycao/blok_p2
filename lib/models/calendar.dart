@@ -32,8 +32,9 @@ class Calendar {
   });
 
   factory Calendar.fromSnapshot(DocumentSnapshot snapshot) {
-    // check if updating a time slot will trigger a calendar update
-    // -> it doesn't
+    if (snapshot == null) {
+      return Calendar.empty();
+    }
     Map data = snapshot.data;
     data = data ?? {};
     return Calendar(
@@ -51,6 +52,22 @@ class Calendar {
       timeSlotRequiresOwnerApproval:
           data['timeSlotRequiresOwnerApproval'] as bool ?? null,
     );
+  }
+
+  factory Calendar.empty() {
+    return Calendar(
+        calendarId: null,
+        name: '-',
+        description: '-',
+        owners: {},
+        followers: {},
+        backVisibility: 0,
+        forwardVisibility: 0,
+        createDate: null,
+        granularity: 60,
+        requests: {},
+        requiresJoinApproval: true,
+        timeSlotRequiresOwnerApproval: true);
   }
 
   String constructTimeSlotId(DateTime dt) {

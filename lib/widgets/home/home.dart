@@ -12,42 +12,63 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _tabIndex = 0;
-
-  void onTabTap(int index) {
-    setState(() {
-      _tabIndex = index;
-    });
-  }
-
-  void onServerEnabled(bool enabled) {
-    setState(() {
-      _tabIndex += enabled ? 1 : -1;
-    });
-  }
+  Tabs tabs = Tabs();
 
   @override
   Widget build(BuildContext context) {
     final FirebaseUser firebaseUser = Provider.of<FirebaseUser>(context);
-    return StreamProvider<User>.value(
-      value: DatabaseService().streamUser(firebaseUser.uid),
+    return MultiProvider(
+      providers: [
+        StreamProvider<User>.value(
+          value: DatabaseService().streamUser(firebaseUser.uid),
+        ),
+        ChangeNotifierProvider<HomeState>(
+          create: (context) => HomeState(),
+        ),
+      ],
       builder: (context, child) {
         final User user = Provider.of<User>(context);
-        Tabs tabs = Tabs(
-            serverEnabled: user != null ? user.serverEnabled : false,
-            onServerEnabled: onServerEnabled);
+        final HomeState homeState = Provider.of<HomeState>(context);
 
-        return tabs.item(_tabIndex) == null
+        bool serverEnabled = user != null ? user.serverEnabled : false;
+
+        return tabs.item(homeState.getTabIndex(), serverEnabled) == null
             ? Loading
             : Scaffold(
-                body: tabs.item(_tabIndex).page,
+                body: tabs.item(homeState.getTabIndex(), serverEnabled).page,
                 bottomNavigationBar: BottomNavigationBar(
-                  onTap: onTabTap,
-                  currentIndex: _tabIndex,
-                  items: tabs.navItems(),
+                  onTap: homeState.setTabIndex,
+                  currentIndex: homeState.getTabIndex(),
+                  items: tabs.navItems(serverEnabled),
                 ),
               );
       },
     );
+  }
+}
+
+class HomeState with ChangeNotifier {
+  int _tabIndex = 0;
+  bool _serverEnabled = false;
+  String _activeCalendarId = '';
+
+  getTabIndex() => _tabIndex;
+  getServerEnabled() => _serverEnabled;
+  getActiveCalendarId() => _activeCalendarId;
+
+  void setTabIndex(int index) {
+    _tabIndex = index;
+    notifyListeners();
+  }
+
+  void setServerEnabled(bool isEnabled) {
+    _serverEnabled = isEnabled;
+    _tabIndex += isEnabled ? 1 : -1;
+    notifyListeners();
+  }
+
+  void setActiveCalendarId(String id) {
+    _activeCalendarId = id;
+    notifyListeners();
   }
 }

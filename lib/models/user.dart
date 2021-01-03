@@ -14,6 +14,7 @@ class User {
 
   User({
     this.userId,
+    this.username,
     this.displayName,
     this.email,
     this.ownedCalendars,
@@ -29,6 +30,7 @@ class User {
     data = data ?? {};
     return User(
       userId: snapshot.documentID ?? null,
+      username: data['username'] as String ?? null,
       displayName: data['displayName'] as String ?? null,
       email: data['email'] as String ?? null,
       ownedCalendars: Map<String, String>.from(data['ownedCalendars']) ?? {},

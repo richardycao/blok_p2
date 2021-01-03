@@ -3,6 +3,8 @@ import 'package:blok_p2/widgets/home/tabs/organizations/drawer/organizations_lis
 import 'package:flutter/material.dart';
 
 class OrganizationsDrawer extends StatelessWidget {
+  //static const route = '/organization';
+
   @override
   Widget build(BuildContext context) {
     return Drawer(

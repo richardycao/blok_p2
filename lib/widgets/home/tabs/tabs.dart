@@ -1,13 +1,12 @@
 import 'package:blok_p2/widgets/home/tabs/events/events_page.dart';
 import 'package:blok_p2/widgets/home/tabs/organizations/organizations_page.dart';
+import 'package:blok_p2/widgets/home/tabs/profile/profile.dart';
 import 'package:flutter/material.dart';
 
 class Tabs {
-  final bool serverEnabled;
-  final Function onServerEnabled;
   List<Tab> _tabs;
 
-  Tabs({this.serverEnabled, this.onServerEnabled}) {
+  Tabs() {
     _tabs = [
       Tab(
         page: OrganizationsPage(),
@@ -22,7 +21,7 @@ class Tabs {
         serverOnly: false,
       ),
       Tab(
-        page: Text('profile'), //Profile(onServerEnabled: onServerEnabled),
+        page: ProfilePage(),
         icon: Icon(Icons.person),
         label: 'Profile',
         serverOnly: false,
@@ -30,7 +29,7 @@ class Tabs {
     ];
   }
 
-  List<Tab> visibleTabs() {
+  List<Tab> visibleTabs(bool serverEnabled) {
     if (serverEnabled == false) {
       return _tabs.where((tab) => !tab.serverOnly).toList();
     }
@@ -38,13 +37,13 @@ class Tabs {
   }
 
   // get data for a single tab
-  Tab item(int index) {
-    return visibleTabs()[index];
+  Tab item(int index, bool serverEnabled) {
+    return visibleTabs(serverEnabled)[index];
   }
 
   // get all the navigation bar items for the tabs
-  List<BottomNavigationBarItem> navItems() {
-    return visibleTabs().map((element) {
+  List<BottomNavigationBarItem> navItems(bool serverEnabled) {
+    return visibleTabs(serverEnabled).map((element) {
       return BottomNavigationBarItem(icon: element.icon, label: element.label);
     }).toList();
   }
