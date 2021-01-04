@@ -1,13 +1,12 @@
 import 'package:blok_p2/services/database.dart';
 import 'package:blok_p2/widgets/common/loading.dart';
+import 'package:blok_p2/widgets/home/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CreateOrganization extends StatefulWidget {
-  final Function setActiveCalendar;
-  CreateOrganization({this.setActiveCalendar});
-  //static const route = '/organization/create';
+  static const route = '/organization/create';
 
   @override
   _CreateOrganizationState createState() => _CreateOrganizationState();
@@ -20,6 +19,8 @@ class _CreateOrganizationState extends State<CreateOrganization> {
   @override
   Widget build(BuildContext context) {
     final FirebaseUser firebaseUser = Provider.of<FirebaseUser>(context);
+    //final HomeState homeState = Provider.of<HomeState>(context);
+
     if (firebaseUser == null) {
       return Loading();
     }
@@ -45,7 +46,7 @@ class _CreateOrganizationState extends State<CreateOrganization> {
                 dynamic result = await DatabaseService()
                     .createCalendar(firebaseUser.uid, organizationName);
                 if (result != null) {
-                  widget.setActiveCalendar(result.toString());
+                  //homeState.setActiveCalendarId(result.toString());
                   Navigator.popUntil(context, ModalRoute.withName('/'));
                 }
               },

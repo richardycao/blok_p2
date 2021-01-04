@@ -1,16 +1,20 @@
+import 'package:blok_p2/main.dart';
+import 'package:blok_p2/widgets/common/loading.dart';
 import 'package:blok_p2/widgets/home/home.dart';
 import 'package:blok_p2/widgets/quick_start/quick_start.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/all.dart';
 
-class AuthWrapper extends StatelessWidget {
+class AuthWrapper extends ConsumerWidget {
   static const route = '/';
 
   @override
-  Widget build(BuildContext context) {
-    final FirebaseUser user = Provider.of<FirebaseUser>(context);
+  Widget build(BuildContext context, ScopedReader watch) {
+    final firebaseUser = watch(firebaseUserProvider);
 
-    return user == null ? QuickStart() : Home();
+    return firebaseUser.when(
+        data: (data) => data.uid == null ? QuickStart() : Home(),
+        loading: () => Loading(),
+        error: (e, s) => Text(e.toString()));
   }
 }
