@@ -1,8 +1,8 @@
-import 'package:blok_p2/widgets/home/home.dart';
+import 'package:blok_p2/widgets/home/tabs/organizations/organizations_page.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/all.dart';
 
-class OrganizationsListTile extends StatelessWidget {
+class OrganizationsListTile extends ConsumerWidget {
   final organizationId;
   final organizationName;
   final IconData iconData;
@@ -18,8 +18,8 @@ class OrganizationsListTile extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    HomeState homeState = Provider.of<HomeState>(context);
+  Widget build(BuildContext context, ScopedReader watch) {
+    final organizationState = watch(organizationStateProvider);
 
     return SizedBox(
         width: boxWidth,
@@ -29,7 +29,7 @@ class OrganizationsListTile extends StatelessWidget {
             FlatButton(
               padding: EdgeInsets.zero,
               onPressed: () {
-                homeState.setActiveCalendarId(organizationId);
+                organizationState.setActiveCalendarId(organizationId);
                 Navigator.pop(context);
               },
               child: Icon(iconData, size: iconSize),

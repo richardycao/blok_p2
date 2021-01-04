@@ -1,63 +1,74 @@
-import 'package:blok_p2/models/user.dart';
+import 'package:blok_p2/main.dart';
 import 'package:blok_p2/widgets/common/loading.dart';
-import 'package:blok_p2/services/database.dart';
 import 'package:blok_p2/widgets/home/tabs/tabs.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/all.dart';
 
-class Home extends StatefulWidget {
-  @override
-  _HomeState createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  Tabs tabs = Tabs();
+class Home extends ConsumerWidget {
+  final Tabs tabs = Tabs();
 
   @override
-  Widget build(BuildContext context) {
-    final FirebaseUser firebaseUser = Provider.of<FirebaseUser>(context);
-    return MultiProvider(
-      providers: [
-        StreamProvider<User>.value(
-          value: DatabaseService().streamUser(firebaseUser.uid),
-        ),
-        ChangeNotifierProxyProvider<User, HomeState>(
-          create: (context) => HomeState(),
-          update: (context, user, homeState) {
-            String activeCalendarId = homeState.getActiveCalendarId();
-            if (activeCalendarId == '' && user != null) {
-              if (user.ownedCalendars.isNotEmpty) {
-                homeState.setActiveCalendarId(
-                    user.ownedCalendars.entries.map((e) => e.key).toList()[0]);
-              }
-            }
-            return homeState;
-          },
-        ),
-      ],
-      builder: (context, child) {
-        final User user = Provider.of<User>(context);
-        final HomeState homeState = Provider.of<HomeState>(context);
+  Widget build(BuildContext context, ScopedReader watch) {
+    final user = watch(userProvider);
+    final homeState = watch(homeStateProvider);
 
-        bool serverEnabled = user != null ? user.serverEnabled : false;
+    final userData =
+        user.when(data: (data) => data, loading: () {}, error: (e, s) {});
+    bool serverEnabled = user != null ? userData.serverEnabled : false;
 
-        return tabs.item(homeState.getTabIndex(), serverEnabled) == null
-            ? Loading
-            : Scaffold(
-                body: tabs.item(homeState.getTabIndex(), serverEnabled).page,
-                bottomNavigationBar: BottomNavigationBar(
-                  onTap: homeState.setTabIndex,
-                  currentIndex: homeState.getTabIndex(),
-                  items: tabs.navItems(serverEnabled),
-                ),
-              );
-      },
-    );
+    return tabs.item(homeState.getTabIndex(), serverEnabled) == null
+        ? Loading
+        : Scaffold(
+            body: tabs.item(homeState.getTabIndex(), serverEnabled).page,
+            bottomNavigationBar: BottomNavigationBar(
+              onTap: homeState.setTabIndex,
+              currentIndex: homeState.getTabIndex(),
+              items: tabs.navItems(serverEnabled),
+            ),
+          );
+
+    //final FirebaseUser firebaseUser = Provider.of<FirebaseUser>(context);
+    // return MultiProvider(
+    //   providers: [
+    //     StreamProvider<User>.value(
+    //       value: DatabaseService().streamUser(firebaseUser.uid),
+    //     ),
+    //     ChangeNotifierProxyProvider<User, HomeState>(
+    //       create: (context) => HomeState(),
+    //       update: (context, user, homeState) {
+    //         String activeCalendarId = homeState.getActiveCalendarId();
+    //         if (activeCalendarId == '' && user != null) {
+    //           if (user.ownedCalendars.isNotEmpty) {
+    //             homeState.setActiveCalendarId(
+    //                 user.ownedCalendars.entries.map((e) => e.key).toList()[0]);
+    //           }
+    //         }
+    //         return homeState;
+    //       },
+    //     ),
+    //   ],
+    //   builder: (context, child) {
+    //     final User user = Provider.of<User>(context);
+    //     final HomeState homeState = Provider.of<HomeState>(context);
+
+    //     bool serverEnabled = user != null ? user.serverEnabled : false;
+
+    //     return tabs.item(homeState.getTabIndex(), serverEnabled) == null
+    //         ? Loading
+    //         : Scaffold(
+    //             body: tabs.item(homeState.getTabIndex(), serverEnabled).page,
+    //             bottomNavigationBar: BottomNavigationBar(
+    //               onTap: homeState.setTabIndex,
+    //               currentIndex: homeState.getTabIndex(),
+    //               items: tabs.navItems(serverEnabled),
+    //             ),
+    //           );
+    //   },
+    // );
   }
 }
 
-class HomeState with ChangeNotifier {
+class HomeState extends ChangeNotifier {
   int _tabIndex = 0;
   bool _serverEnabled = false;
   String _activeCalendarId = '';
@@ -80,5 +91,10 @@ class HomeState with ChangeNotifier {
   void setActiveCalendarId(String id) {
     _activeCalendarId = id;
     notifyListeners();
+  }
+
+  HomeState withActiveCalendarId(String id) {
+    this.setActiveCalendarId(id);
+    return this;
   }
 }

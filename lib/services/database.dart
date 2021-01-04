@@ -29,6 +29,7 @@ class DatabaseService {
   }
 
   Stream<Calendar> streamCalendar(String calendarId) {
+    print("streamed id $calendarId");
     try {
       return Firestore.instance
           .collection(CALENDARS)
