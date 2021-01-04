@@ -15,13 +15,13 @@ class Tabs {
         serverOnly: true,
       ),
       Tab(
-        page: Text('events'), //EventsPage(),
+        page: EventsPage(),
         icon: Icon(Icons.event_note),
         label: 'Events',
         serverOnly: false,
       ),
       Tab(
-        page: Text('profile'), //ProfilePage(),
+        page: ProfilePage(),
         icon: Icon(Icons.person),
         label: 'Profile',
         serverOnly: false,

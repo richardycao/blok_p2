@@ -16,6 +16,7 @@ class DatabaseService {
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
   Stream<User> streamUser(String userId) {
+    print("streamed user id $userId");
     try {
       return Firestore.instance
           .collection(USERS)
@@ -29,7 +30,7 @@ class DatabaseService {
   }
 
   Stream<Calendar> streamCalendar(String calendarId) {
-    print("streamed id $calendarId");
+    print("streamed calendar id $calendarId");
     try {
       return Firestore.instance
           .collection(CALENDARS)

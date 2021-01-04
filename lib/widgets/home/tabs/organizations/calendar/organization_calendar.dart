@@ -1,12 +1,15 @@
 import 'package:blok_p2/models/calendar.dart';
+import 'package:blok_p2/widgets/home/tabs/organizations/organizations_page.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/all.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-class OrganizationCalendar extends StatelessWidget {
+class OrganizationCalendar extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
-    final Calendar calendar = Provider.of<Calendar>(context);
+  Widget build(BuildContext context, ScopedReader watch) {
+    final calendar = watch(calendarProvider);
+    final calendarData =
+        calendar.when(data: (data) => data, loading: () {}, error: (e, s) {});
 
     return Container(
       child: calendar != null

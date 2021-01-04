@@ -12,7 +12,7 @@ class OrganizationsDrawer extends StatelessWidget {
         children: [
           OrganizationsList(),
           VerticalDivider(color: Colors.black),
-          //OrganizationOverview()
+          OrganizationOverview()
         ],
       ),
     );
