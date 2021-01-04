@@ -24,7 +24,7 @@ final firebaseUserProvider = StreamProvider<FirebaseUser>((ref) {
 final userProvider = StreamProvider<User>((ref) {
   final firebaseUser = ref.watch(firebaseUserProvider);
   return DatabaseService().streamUser(firebaseUser.when(
-      data: (data) => data.uid, loading: () {}, error: (e, s) {}));
+      data: (data) => data.uid, loading: () => null, error: (e, s) {}));
 });
 
 final homeStateProvider = ChangeNotifierProvider<HomeState>((ref) {

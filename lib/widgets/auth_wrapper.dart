@@ -13,7 +13,7 @@ class AuthWrapper extends ConsumerWidget {
     final firebaseUser = watch(firebaseUserProvider);
 
     return firebaseUser.when(
-        data: (data) => data.uid == null ? QuickStart() : Home(),
+        data: (data) => data == null ? QuickStart() : Home(),
         loading: () => Loading(),
         error: (e, s) => Text(e.toString()));
   }

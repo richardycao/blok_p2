@@ -29,6 +29,10 @@ class TimeSlot {
     this.background,
     this.isAllDay,
   });
+
+  String extractCalendarId(String tsId) {
+    return tsId.split("-")[0];
+  }
 }
 
 class TimeSlots extends CalendarDataSource {
@@ -82,7 +86,7 @@ class TimeSlots extends CalendarDataSource {
   }
 
   // update this.appointments with the document changes
-  void updateSources(TimeSlots ts, int granularity) {
+  void updateTimeSlots(TimeSlots ts) {
     ts.timeSlots.entries.forEach((element) {
       timeSlots[element.key] = element.value;
     });

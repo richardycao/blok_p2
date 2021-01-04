@@ -8,7 +8,7 @@ class User {
   Map<String, String> ownedCalendars; // calendarId : calendarName
   Map<String, String> followedCalendars; // calendarId : calendarName
   bool serverEnabled;
-  Map<String, String> bookings; // timeSlotId : calendarId
+  Map<String, DateTime> bookings; // timeSlotId : joinDate
   Map<String, String> incomingRequests; // requestId : itemId
   Map<String, String> outgoingRequests; // requestId : itemId
 
@@ -37,7 +37,7 @@ class User {
       followedCalendars:
           Map<String, String>.from(data['followedCalendars']) ?? {},
       serverEnabled: data['serverEnabled'] as bool ?? null,
-      bookings: Map<String, String>.from(data['bookings']) ?? {},
+      bookings: Map<String, DateTime>.from(data['bookings']) ?? {},
       incomingRequests:
           Map<String, String>.from(data['incomingRequests']) ?? {},
       outgoingRequests:

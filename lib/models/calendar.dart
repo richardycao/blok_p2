@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-enum CalendarType { OWNER, CLIENT }
+enum CalendarType { ORGANIZATION, EVENT }
 
 class Calendar {
   final String calendarId;

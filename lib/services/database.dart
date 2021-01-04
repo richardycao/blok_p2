@@ -16,7 +16,6 @@ class DatabaseService {
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
   Stream<User> streamUser(String userId) {
-    print("streamed user id $userId");
     try {
       return Firestore.instance
           .collection(USERS)
@@ -30,7 +29,6 @@ class DatabaseService {
   }
 
   Stream<Calendar> streamCalendar(String calendarId) {
-    print("streamed calendar id $calendarId");
     try {
       return Firestore.instance
           .collection(CALENDARS)
@@ -43,14 +41,28 @@ class DatabaseService {
     }
   }
 
-  Stream<TimeSlots> streamTimeSlots(String calendarId, CalendarType type) {
+  Stream<TimeSlots> streamTimeSlots(CalendarType type,
+      {String calendarId, List<String> timeSlotIds}) {
     try {
-      return Firestore.instance
-          .collection(CALENDARS)
-          .document(calendarId)
-          .collection(TIMESLOTS)
-          .snapshots()
-          .map((snapshot) => TimeSlots.fromQuerySnapshot(snapshot, type));
+      if (type == CalendarType.ORGANIZATION) {
+        return Firestore.instance
+            .collection(CALENDARS)
+            .document(calendarId)
+            .collection(TIMESLOTS)
+            .snapshots()
+            .map((snapshot) => TimeSlots.fromQuerySnapshot(snapshot, type));
+      } else if (type == CalendarType.EVENT) {
+        List<String> calendarIds =
+            timeSlotIds.map((e) => TimeSlot().extractCalendarId(e)).toList();
+
+        return Firestore.instance
+            .collection(CALENDARS)
+            .where(FieldPath.documentId, whereIn: calendarIds)
+            .getDocuments()
+            .asStream()
+            .map((snapshot) =>
+                TimeSlots.fromDocumentChanges(snapshot.documentChanges, type));
+      }
     } catch (e) {
       print(e);
       return null;
@@ -241,8 +253,9 @@ class DatabaseService {
           new Map<String, String>.from(user.bookings);
       final Map<String, String> followedCalendars =
           new Map<String, String>.from(user.followedCalendars);
-      bookings = Map<String, String>.fromEntries(
-          bookings.entries.where((element) => element.value != calendarId));
+      bookings = Map<String, String>.fromEntries(bookings.entries.where(
+          (element) =>
+              TimeSlot().extractCalendarId(element.key) != calendarId));
       followedCalendars.remove(calendarId);
       // removed await here
       Firestore.instance.collection(USERS).document(user.userId).setData({
@@ -290,7 +303,7 @@ class DatabaseService {
       // Updates user's bookings
       // removed await here
       Firestore.instance.collection(USERS).document(user.userId).updateData({
-        "bookings.$timeSlotId": calendarId,
+        "bookings.$timeSlotId": DateTime.now(),
       });
     } catch (e) {
       print(e.toString());
