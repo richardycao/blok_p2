@@ -15,21 +15,13 @@ class OrganizationsPage extends StatefulWidget {
 class _OrganizationsPageState extends State<OrganizationsPage> {
   @override
   Widget build(BuildContext context) {
-    final User user = Provider.of<User>(context);
     final HomeState homeState = Provider.of<HomeState>(context);
-
-    String activeCalendarId = homeState.getActiveCalendarId();
-    if (activeCalendarId == '' && user != null) {
-      if (user.ownedCalendars.isNotEmpty) {
-        activeCalendarId =
-            user.ownedCalendars.entries.map((e) => e.key).toList()[0];
-      }
-    }
 
     return MultiProvider(
         providers: [
           StreamProvider<Calendar>.value(
-            value: DatabaseService().streamCalendar(activeCalendarId),
+            value: DatabaseService()
+                .streamCalendar(homeState.getActiveCalendarId()),
           ),
         ],
         builder: (context, child) {

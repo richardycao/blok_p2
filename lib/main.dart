@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         ),
     Convert.route: (context) => Convert(),
     //OrganizationsDrawer.route: (context) => OrganizationsDrawer(),
-    //CreateOrganization.route: (context) => CreateOrganization(),
+    CreateOrganization.route: (context) => CreateOrganization(),
   };
 
   @override

@@ -22,8 +22,18 @@ class _HomeState extends State<Home> {
         StreamProvider<User>.value(
           value: DatabaseService().streamUser(firebaseUser.uid),
         ),
-        ChangeNotifierProvider<HomeState>(
+        ChangeNotifierProxyProvider<User, HomeState>(
           create: (context) => HomeState(),
+          update: (context, user, homeState) {
+            String activeCalendarId = homeState.getActiveCalendarId();
+            if (activeCalendarId == '' && user != null) {
+              if (user.ownedCalendars.isNotEmpty) {
+                homeState.setActiveCalendarId(
+                    user.ownedCalendars.entries.map((e) => e.key).toList()[0]);
+              }
+            }
+            return homeState;
+          },
         ),
       ],
       builder: (context, child) {
