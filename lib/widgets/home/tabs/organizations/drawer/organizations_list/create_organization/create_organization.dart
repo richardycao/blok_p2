@@ -42,7 +42,7 @@ class CreateOrganization extends ConsumerWidget {
                         .createCalendar(userData.userId, organizationName);
                     if (result != null) {
                       organizationState.setActiveCalendarId(result.toString());
-                      print(result.toString());
+                      organizationName = '';
                       Navigator.popUntil(context, ModalRoute.withName('/'));
                     }
                   },

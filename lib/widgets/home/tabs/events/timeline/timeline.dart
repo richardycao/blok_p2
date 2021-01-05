@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-class EventsCalendar extends ConsumerWidget {
+class Timeline extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final user = watch(userProvider);
@@ -19,6 +19,7 @@ class EventsCalendar extends ConsumerWidget {
               scheduleViewSettings: ScheduleViewSettings(
                 appointmentItemHeight: 70,
                 hideEmptyScheduleWeek: true,
+                weekHeaderSettings: null,
               ),
             ),
           );

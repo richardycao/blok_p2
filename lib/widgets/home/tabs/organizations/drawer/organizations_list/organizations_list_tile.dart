@@ -30,7 +30,7 @@ class OrganizationsListTile extends ConsumerWidget {
               padding: EdgeInsets.zero,
               onPressed: () {
                 organizationState.setActiveCalendarId(organizationId);
-                //Navigator.pop(context);
+                Navigator.pop(context);
               },
               child: Icon(iconData, size: iconSize),
             ),
