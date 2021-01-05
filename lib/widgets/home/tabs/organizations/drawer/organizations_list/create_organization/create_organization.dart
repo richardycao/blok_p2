@@ -15,9 +15,9 @@ class CreateOrganization extends ConsumerWidget {
     final user = watch(userProvider);
     final organizationState = watch(organizationStateProvider);
     final userData =
-        user.when(data: (data) => data, loading: () {}, error: (e, s) {});
+        user.when(data: (data) => data, loading: () => null, error: (e, s) {});
 
-    return user == null
+    return userData == null
         ? Loading(blank: true)
         : Scaffold(
             appBar: AppBar(

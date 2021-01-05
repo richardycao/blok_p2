@@ -194,7 +194,7 @@ class DatabaseService {
   }
 
   // ADD user to calendar
-  Future addFollowerToCalendar(String userId, String calendarId) async {
+  Future<String> addFollowerToCalendar(String userId, String calendarId) async {
     try {
       DocumentSnapshot calendarSnapshot = await Firestore.instance
           .collection(CALENDARS)
@@ -213,8 +213,11 @@ class DatabaseService {
         "followedCalendars.$calendarId":
             calendarSnapshot.data['name'] as String,
       });
+
+      return calendarId;
     } catch (e) {
       print(e.toString());
+      return null;
     }
   }
 

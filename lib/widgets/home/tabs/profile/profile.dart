@@ -30,28 +30,35 @@ class ProfilePage extends ConsumerWidget {
               ),
               ProfileInfoCard(
                   label: 'email:', value: Text(userData.email ?? "n/a")),
-              if (userData.email != null)
+              if (userData.email != '')
                 ProfileInfoCard(
                   label: 'client/server',
                   value: Switch(
                       value: userData.serverEnabled,
                       onChanged: (result) async {
-                        homeState.setServerEnabled(result);
-                        await DatabaseService()
-                            .updateUser(userData.userId, serverEnabled: result);
+                        if (!result) {
+                          homeState.setServerEnabled(result);
+                          await DatabaseService().updateUser(userData.userId,
+                              serverEnabled: result);
+                        } else {
+                          await DatabaseService().updateUser(userData.userId,
+                              serverEnabled: result);
+                          homeState.setServerEnabled(result);
+                        }
                       }),
                 ),
-              if (userData.email == null)
+              if (userData.email == '')
                 FlatButton.icon(
                     onPressed: () {
                       Navigator.pushNamed(context, Convert.route);
                     },
                     icon: Icon(Icons.arrow_circle_up),
                     label: Text('Convert to permanent account')),
-              if (userData.email != null)
+              if (userData.email != '')
                 FlatButton.icon(
                     onPressed: () async {
                       await _auth.signOut();
+                      homeState.setTabIndex(0);
                     },
                     icon: Icon(Icons.person),
                     label: Text('Logout')),

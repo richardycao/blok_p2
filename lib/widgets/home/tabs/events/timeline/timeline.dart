@@ -13,15 +13,17 @@ class Timeline extends ConsumerWidget {
 
     return userData == null
         ? Loading(blank: true)
-        : Container(
-            child: SfCalendar(
-              view: CalendarView.schedule,
-              scheduleViewSettings: ScheduleViewSettings(
-                appointmentItemHeight: 70,
-                hideEmptyScheduleWeek: true,
-                weekHeaderSettings: null,
-              ),
-            ),
-          );
+        : userData.bookings.isEmpty
+            ? Text('no upcoming events')
+            : Container(
+                child: SfCalendar(
+                  view: CalendarView.schedule,
+                  scheduleViewSettings: ScheduleViewSettings(
+                    appointmentItemHeight: 70,
+                    hideEmptyScheduleWeek: true,
+                    weekHeaderSettings: null,
+                  ),
+                ),
+              );
   }
 }

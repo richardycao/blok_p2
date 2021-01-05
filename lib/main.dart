@@ -7,6 +7,7 @@ import 'package:blok_p2/widgets/authenticate/convert/convert.dart';
 import 'package:blok_p2/widgets/authenticate/register/register.dart';
 import 'package:blok_p2/widgets/authenticate/sign_in/sign_in.dart';
 import 'package:blok_p2/widgets/home/home.dart';
+import 'package:blok_p2/widgets/home/tabs/events/add_calendar/add_calendar.dart';
 import 'package:blok_p2/widgets/home/tabs/organizations/drawer/organizations_drawer.dart';
 import 'package:blok_p2/widgets/home/tabs/organizations/drawer/organizations_list/create_organization/create_organization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
     Convert.route: (BuildContext context) => Convert(),
     //OrganizationsDrawer.route: (BuildContext context) => OrganizationsDrawer(),
     CreateOrganization.route: (BuildContext context) => CreateOrganization(),
+    AddCalendar.route: (BuildContext context) => AddCalendar(),
   };
 
   @override

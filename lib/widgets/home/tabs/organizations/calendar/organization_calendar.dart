@@ -1,4 +1,5 @@
 import 'package:blok_p2/models/calendar.dart';
+import 'package:blok_p2/widgets/home/tabs/organizations/drawer/organizations_list/create_organization/create_organization.dart';
 import 'package:blok_p2/widgets/home/tabs/organizations/organizations_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
@@ -25,7 +26,15 @@ class OrganizationCalendar extends ConsumerWidget {
                   startHour: 0,
                   endHour: 24),
             )
-          : Text(''),
+          : Column(children: [
+              Text('you don\'t have any organizations'),
+              ElevatedButton(
+                child: Text('Create organization'),
+                onPressed: () {
+                  Navigator.pushNamed(context, CreateOrganization.route);
+                },
+              )
+            ]),
     );
   }
 }

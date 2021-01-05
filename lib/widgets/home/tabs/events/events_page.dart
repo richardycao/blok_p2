@@ -2,6 +2,7 @@ import 'package:blok_p2/main.dart';
 import 'package:blok_p2/models/calendar.dart';
 import 'package:blok_p2/models/time_slot.dart';
 import 'package:blok_p2/services/database.dart';
+import 'package:blok_p2/widgets/home/tabs/events/add_calendar/add_calendar.dart';
 import 'package:blok_p2/widgets/home/tabs/events/calendar_list/calendar_list.dart';
 import 'package:blok_p2/widgets/home/tabs/events/timeline/timeline.dart';
 import 'package:flutter/material.dart';
@@ -53,7 +54,9 @@ class EventsPage extends ConsumerWidget {
             SizedBox(
               width: 60.0,
               child: FlatButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, AddCalendar.route);
+                },
                 child: Icon(Icons.add),
               ),
             ),
