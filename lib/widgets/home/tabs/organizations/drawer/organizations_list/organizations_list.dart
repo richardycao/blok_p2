@@ -1,10 +1,12 @@
 import 'package:blok_p2/main.dart';
 import 'package:blok_p2/models/user.dart';
+import 'package:blok_p2/utilities/utilities.dart';
 import 'package:blok_p2/widgets/home/home.dart';
 import 'package:blok_p2/widgets/home/tabs/organizations/drawer/organizations_list/create_organization/create_organization.dart';
 import 'package:blok_p2/widgets/home/tabs/organizations/drawer/organizations_list/organizations_list_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
+import 'package:mdi/mdi.dart';
 
 class OrganizationsList extends ConsumerWidget {
   @override
@@ -33,7 +35,7 @@ class OrganizationsList extends ConsumerWidget {
                     ? OrganizationsListTile(
                         organizationId: orgIds[index],
                         organizationName: orgNames[index],
-                        iconData: Icons.account_box,
+                        iconData: CharIcon().char(orgNames[index][0]),
                       )
                     : FlatButton(
                         onPressed: () {

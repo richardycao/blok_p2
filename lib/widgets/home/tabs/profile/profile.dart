@@ -38,7 +38,7 @@ class ProfilePage extends ConsumerWidget {
                       onChanged: (result) async {
                         if (!result) {
                           homeState.setServerEnabled(result);
-                          await DatabaseService().updateUser(userData.userId,
+                          DatabaseService().updateUser(userData.userId,
                               serverEnabled: result);
                         } else {
                           await DatabaseService().updateUser(userData.userId,

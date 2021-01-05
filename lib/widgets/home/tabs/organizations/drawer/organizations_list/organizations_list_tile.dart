@@ -12,6 +12,7 @@ class OrganizationsListTile extends ConsumerWidget {
   final double boxWidth = 90.0;
   final double boxHeight = 110.0;
   final double iconSize = 80.0;
+  final double fontSize = 15.0;
 
   String truncateWithEllipsis(int cutoff, String str) {
     return (str.length <= cutoff) ? str : '${str.substring(0, cutoff)}...';
@@ -34,7 +35,10 @@ class OrganizationsListTile extends ConsumerWidget {
               },
               child: Icon(iconData, size: iconSize),
             ),
-            Text(truncateWithEllipsis(9, organizationName)),
+            Text(
+              truncateWithEllipsis(8, organizationName),
+              style: TextStyle(fontSize: fontSize),
+            ),
           ],
         ));
   }
