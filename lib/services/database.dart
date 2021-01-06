@@ -169,7 +169,7 @@ class DatabaseService {
         // removed await here
         timeSlotsCollection.document(timeSlotId).setData({
           'eventName': null,
-          'status': 0,
+          'status': (ts.hour < 8 || ts.hour > 18) ? 0 : 1,
           'occupants': {},
           'limit': testTimeSlotLimit,
           'from': ts,

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mdi/mdi.dart';
 
+String truncateWithEllipsis(int cutoff, String str) {
+  return (str.length <= cutoff) ? str : '${str.substring(0, cutoff)}..';
+}
+
 class CharIcon {
   Map<String, IconData> _icons = {
     'A': Mdi.alphaACircle,

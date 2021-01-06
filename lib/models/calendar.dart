@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 enum CalendarType { ORGANIZATION, EVENT }
 
 class Calendar {
-  final String calendarId;
+  String calendarId;
   String name;
   String description;
   Map<String, String> owners; // userId : name

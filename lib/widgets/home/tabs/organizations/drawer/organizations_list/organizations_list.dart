@@ -1,12 +1,9 @@
 import 'package:blok_p2/main.dart';
-import 'package:blok_p2/models/user.dart';
 import 'package:blok_p2/utilities/utilities.dart';
-import 'package:blok_p2/widgets/home/home.dart';
 import 'package:blok_p2/widgets/home/tabs/organizations/drawer/organizations_list/create_organization/create_organization.dart';
 import 'package:blok_p2/widgets/home/tabs/organizations/drawer/organizations_list/organizations_list_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
-import 'package:mdi/mdi.dart';
 
 class OrganizationsList extends ConsumerWidget {
   @override
@@ -41,8 +38,6 @@ class OrganizationsList extends ConsumerWidget {
                         onPressed: () {
                           Navigator.pushNamed(
                               context, CreateOrganization.route);
-                          // MaterialPageRoute(
-                          //     builder: (context) => CreateOrganization()));
                         },
                         child: Icon(Icons.add, size: 50.0),
                       );

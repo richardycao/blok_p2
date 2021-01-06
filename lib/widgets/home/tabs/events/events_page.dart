@@ -7,6 +7,7 @@ import 'package:blok_p2/widgets/home/tabs/events/calendar_list/calendar_list.dar
 import 'package:blok_p2/widgets/home/tabs/events/timeline/timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 // pulls in events changes
 final eventDiffProvider = StreamProvider<TimeSlots>((ref) {
@@ -23,6 +24,11 @@ final eventStateProvider = ChangeNotifierProvider<EventState>((ref) {
   return EventState();
 });
 
+final eventCalendarProvider = StreamProvider<Calendar>((ref) {
+  final eventState = ref.watch(eventStateProvider);
+  return DatabaseService().streamCalendar(eventState.activeCalendarId);
+});
+
 // applies event changes and propogates to visible "state"
 final eventTimeSlotsProvider = StateNotifierProvider<EventTimeSlots>((ref) {
   final eventDiff = ref.watch(eventDiffProvider);
@@ -37,6 +43,32 @@ final eventTimeSlotsProvider = StateNotifierProvider<EventTimeSlots>((ref) {
 class EventsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
+    void _showAddPanel() {
+      showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+            height: 115.0,
+            child: ListView(
+              children: [
+                ListTile(
+                  title: Text('Scan QR code'),
+                  onTap: () {},
+                ),
+                ListTile(
+                  title: Text('Enter calendar ID'),
+                  onTap: () {
+                    Navigator.pushNamed(context, AddCalendar.route);
+                  },
+                ),
+              ],
+            ),
+          );
+        },
+        elevation: 30.0,
+      );
+    }
+
     final eventDiff = watch(eventDiffProvider);
     final eventDiffData = eventDiff.when(
         data: (data) => data, loading: () => null, error: (e, s) => null);
@@ -55,7 +87,7 @@ class EventsPage extends ConsumerWidget {
               width: 60.0,
               child: FlatButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, AddCalendar.route);
+                  _showAddPanel();
                 },
                 child: Icon(Icons.add),
               ),
@@ -85,9 +117,23 @@ class EventsPage extends ConsumerWidget {
 
 // This is the actual "state". It records all of the data.
 class EventState extends ChangeNotifier {
+  String _activeCalendarId = '';
+  CalendarView _calendarView = CalendarView.week;
   TimeSlots _timeSlots = TimeSlots();
 
   TimeSlots get timeSlots => _timeSlots;
+  CalendarView get calendarView => _calendarView;
+  String get activeCalendarId => _activeCalendarId;
+
+  void setActiveCalendarId(String id) {
+    _activeCalendarId = id;
+    notifyListeners();
+  }
+
+  void setCalendarView(CalendarView view) {
+    _calendarView = view;
+    notifyListeners();
+  }
 
   void addTimeSlots(TimeSlots ts) {
     _timeSlots.updateTimeSlots(ts);

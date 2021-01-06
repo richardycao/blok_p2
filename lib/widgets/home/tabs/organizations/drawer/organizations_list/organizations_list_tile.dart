@@ -1,3 +1,4 @@
+import 'package:blok_p2/utilities/utilities.dart';
 import 'package:blok_p2/widgets/home/tabs/organizations/organizations_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
@@ -11,12 +12,8 @@ class OrganizationsListTile extends ConsumerWidget {
 
   final double boxWidth = 90.0;
   final double boxHeight = 110.0;
-  final double iconSize = 80.0;
+  final double iconSize = 70.0;
   final double fontSize = 15.0;
-
-  String truncateWithEllipsis(int cutoff, String str) {
-    return (str.length <= cutoff) ? str : '${str.substring(0, cutoff)}...';
-  }
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
@@ -36,7 +33,7 @@ class OrganizationsListTile extends ConsumerWidget {
               child: Icon(iconData, size: iconSize),
             ),
             Text(
-              truncateWithEllipsis(8, organizationName),
+              truncateWithEllipsis(6, organizationName),
               style: TextStyle(fontSize: fontSize),
             ),
           ],

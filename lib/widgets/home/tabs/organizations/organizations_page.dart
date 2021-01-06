@@ -1,10 +1,12 @@
 import 'package:blok_p2/main.dart';
 import 'package:blok_p2/models/calendar.dart';
+import 'package:blok_p2/models/time_slot.dart';
 import 'package:blok_p2/services/database.dart';
 import 'package:blok_p2/widgets/home/tabs/organizations/calendar/organization_calendar.dart';
 import 'package:blok_p2/widgets/home/tabs/organizations/drawer/organizations_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 final organizationStateProvider =
     ChangeNotifierProvider<OrganizationState>((ref) {
@@ -28,7 +30,7 @@ final organizationCalendarIdProvider =
   return OrganizationCalendarId(id: organizationState.activeCalendarId);
 });
 
-final calendarProvider = StreamProvider<Calendar>((ref) {
+final organizationCalendarProvider = StreamProvider<Calendar>((ref) {
   final organizationState = ref.watch(organizationCalendarIdProvider.state);
   return DatabaseService().streamCalendar(organizationState);
 });
@@ -36,15 +38,31 @@ final calendarProvider = StreamProvider<Calendar>((ref) {
 class OrganizationsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final calendar = watch(calendarProvider);
+    final organizationState = watch(organizationStateProvider);
+    final calendar = watch(organizationCalendarProvider);
     final calendarData =
         calendar.when(data: (data) => data, loading: () {}, error: (e, s) {});
 
     return Scaffold(
       drawer: OrganizationsDrawer(),
       appBar: AppBar(
-        title: Text(calendarData != null ? calendarData.name : "-"),
-        actions: [FlatButton(onPressed: () {}, child: Icon(Icons.more_horiz))],
+        title: Text(calendarData != null ? calendarData.name : ""),
+        actions: [
+          PopupMenuButton(
+              elevation: 0,
+              onSelected: (value) {
+                organizationState.setCalendarView(value);
+              },
+              itemBuilder: (context) => {
+                    'Daily': CalendarView.day,
+                    'Weekly': CalendarView.week
+                  }
+                      .entries
+                      .map<PopupMenuItem>((e) =>
+                          PopupMenuItem(child: Text(e.key), value: e.value))
+                      .toList(),
+              icon: Icon(Icons.view_agenda))
+        ],
       ),
       body: OrganizationCalendar(),
     );
@@ -54,13 +72,24 @@ class OrganizationsPage extends ConsumerWidget {
 // This is the actual "state". It records all of the data.
 class OrganizationState extends ChangeNotifier {
   String _activeCalendarId = '';
+  CalendarView _calendarView = CalendarView.week;
+  TimeSlots _timeSlots = TimeSlots(timeSlots: {});
 
   String get activeCalendarId => _activeCalendarId;
+  CalendarView get calendarView => _calendarView;
+  TimeSlots get timeSlots => _timeSlots;
 
   void setActiveCalendarId(String id) {
     _activeCalendarId = id;
     notifyListeners();
   }
+
+  void setCalendarView(CalendarView view) {
+    _calendarView = view;
+    notifyListeners();
+  }
+
+  // write setTimeSlots/updateTimeSlots after I figure how documentChanges is done
 }
 
 // This is not the state, despite being a StateNotifier. It only exists to

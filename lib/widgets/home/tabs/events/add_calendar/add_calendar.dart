@@ -19,6 +19,11 @@ class AddCalendar extends ConsumerWidget {
         : Scaffold(
             appBar: AppBar(
               title: Text('Add Calendar'),
+              leading: FlatButton(
+                  onPressed: () {
+                    Navigator.popUntil(context, ModalRoute.withName('/'));
+                  },
+                  child: Icon(Icons.arrow_back)),
             ),
             body: Column(children: [
               TextFormField(

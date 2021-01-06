@@ -11,6 +11,9 @@ class CalendarList extends ConsumerWidget {
     final userData =
         user.when(data: (data) => data, loading: () => null, error: (e, s) {});
 
+    List<String> calendarIds = userData == null
+        ? null
+        : userData.followedCalendars.entries.map((e) => e.key).toList();
     List<String> calendars = userData == null
         ? null
         : userData.followedCalendars.entries.map((e) => e.value).toList();
@@ -20,7 +23,7 @@ class CalendarList extends ConsumerWidget {
         : ListView.builder(
             itemCount: userData.followedCalendars.length,
             itemBuilder: (context, index) {
-              return CalendarListTile(calendars[index]);
+              return CalendarListTile(calendarIds[index], calendars[index]);
             });
   }
 }
