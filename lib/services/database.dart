@@ -60,9 +60,9 @@ class DatabaseService {
             .where(FieldPath.documentId, whereIn: calendarIds)
             .getDocuments()
             .asStream()
-            .map((snapshot) =>
-                TimeSlots.fromDocumentChanges(snapshot.documentChanges, type));
+            .map((snapshot) => TimeSlots.fromQuerySnapshot(snapshot, type));
       }
+      return null;
     } catch (e) {
       print(e);
       return null;
@@ -123,7 +123,7 @@ class DatabaseService {
   Future<String> createCalendar(String userId, String calendarName,
       {String description = "",
       int backVisiblity = 0,
-      int forwardVisibility = 2,
+      int forwardVisibility = 14,
       int granularity = 60}) async {
     try {
       DateTime now = DateTime.now();
@@ -150,13 +150,14 @@ class DatabaseService {
       String calendarId = docRef.documentID;
 
       // Add time slots
+      DateTime prestart = today.add(Duration(days: backVisiblity - 7));
       DateTime start = today.add(Duration(days: backVisiblity));
       DateTime end = today.add(Duration(days: forwardVisibility));
-      final timeDiff = end.difference(start).inHours;
+      final timeDiff = end.difference(prestart).inHours;
       List<DateTime> timeSlots = List.generate(
           timeDiff,
-          (i) => DateTime(
-              start.year, start.month, start.day, start.hour + (i), 0, 0));
+          (i) => DateTime(prestart.year, prestart.month, prestart.day,
+              prestart.hour + (i), 0, 0));
 
       CollectionReference timeSlotsCollection = Firestore.instance
           .collection(CALENDARS)
@@ -169,7 +170,8 @@ class DatabaseService {
         // removed await here
         timeSlotsCollection.document(timeSlotId).setData({
           'eventName': null,
-          'status': (ts.hour < 8 || ts.hour > 18) ? 0 : 1,
+          'status':
+              ((ts.hour < 9 || ts.hour >= 17) || ts.isBefore(start)) ? 0 : 1,
           'occupants': {},
           'limit': testTimeSlotLimit,
           'from': ts,

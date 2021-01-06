@@ -1,6 +1,7 @@
 import 'package:blok_p2/models/calendar.dart';
 import 'package:blok_p2/utilities/utilities.dart';
 import 'package:blok_p2/widgets/common/loading.dart';
+import 'package:blok_p2/widgets/home/tabs/organizations/drawer/organization_overview/organization_followers/organization_followers.dart';
 import 'package:blok_p2/widgets/home/tabs/organizations/drawer/organization_overview/organization_overview_tile.dart';
 import 'package:blok_p2/widgets/home/tabs/organizations/organizations_page.dart';
 import 'package:flutter/material.dart';
@@ -27,8 +28,14 @@ class OrganizationOverview extends ConsumerWidget {
               padding: EdgeInsets.zero,
               shrinkWrap: true,
               children: [
-                OrganizationOverviewTile(),
-                OrganizationOverviewTile(),
+                OrganizationOverviewTile(
+                  title: 'Followers',
+                  route: OrganizationFollowers.route,
+                ),
+                OrganizationOverviewTile(
+                  title: 'Requests',
+                  route: '/',
+                ),
               ],
             ),
           ],

@@ -61,11 +61,7 @@ class TimeSlots extends CalendarDataSource {
           from: snap.data['from'].toDate() ?? null,
           to: snap.data['to'].toDate() ?? null,
           requests: Map<String, String>.from(snap.data['requests']) ?? {},
-          background: (snap.data['status'] as int) == 0
-              ? Colors.grey
-              : snap.data['occupants'].length > 0
-                  ? Colors.red
-                  : Colors.white,
+          background: Colors.transparent,
           isAllDay: snap.data['isAllDay'] ?? false,
         );
       },
@@ -86,11 +82,24 @@ class TimeSlots extends CalendarDataSource {
   }
 
   // update this.appointments with the document changes
-  void updateTimeSlots(TimeSlots ts) {
+  Map<String, TimeSlot> updateTimeSlots(TimeSlots ts) {
     ts.timeSlots.entries.forEach((element) {
+      // rewrites each TimeSlot with new TimeSlot object (element.value)
       timeSlots[element.key] = element.value;
+
+      // for each updated time slot, find it in the appointments list and update
+      int index = appointments.firstWhere(
+          (listElement) => listElement.timeSlotId == element.key,
+          orElse: () => null);
+
+      if (index != null) {
+        appointments[index] = element.value;
+      } else {
+        appointments.add(element.value);
+      }
     });
-    appointments = timeSlots.entries.map((e) => e.value).toList();
+    return timeSlots;
+    //appointments = timeSlots.entries.map((e) => e.value).toList();
   }
 
   @override

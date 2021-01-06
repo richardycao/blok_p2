@@ -9,6 +9,7 @@ import 'package:blok_p2/widgets/authenticate/sign_in/sign_in.dart';
 import 'package:blok_p2/widgets/home/home.dart';
 import 'package:blok_p2/widgets/home/tabs/events/add_calendar/add_calendar.dart';
 import 'package:blok_p2/widgets/home/tabs/events/calendar/event_calendar.dart';
+import 'package:blok_p2/widgets/home/tabs/organizations/drawer/organization_overview/organization_followers/organization_followers.dart';
 import 'package:blok_p2/widgets/home/tabs/organizations/drawer/organizations_list/create_organization/create_organization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +33,10 @@ final homeStateProvider = ChangeNotifierProvider<HomeState>((ref) {
   return HomeState();
 });
 
+final isLoadingProvider = StateNotifierProvider<IsLoading>((ref) {
+  return IsLoading();
+});
+
 class MyApp extends StatelessWidget {
   final routes = {
     AuthWrapper.route: (BuildContext context) => AuthWrapper(),
@@ -46,6 +51,8 @@ class MyApp extends StatelessWidget {
         ),
     Convert.route: (BuildContext context) => Convert(),
     CreateOrganization.route: (BuildContext context) => CreateOrganization(),
+    OrganizationFollowers.route: (BuildContext context) =>
+        OrganizationFollowers(),
     AddCalendar.route: (BuildContext context) => AddCalendar(),
     EventCalendar.route: (BuildContext context) => EventCalendar(),
   };
@@ -56,5 +63,13 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: routes,
     );
+  }
+}
+
+class IsLoading extends StateNotifier<bool> {
+  IsLoading() : super(false);
+
+  void setLoading(bool input) {
+    state = input;
   }
 }

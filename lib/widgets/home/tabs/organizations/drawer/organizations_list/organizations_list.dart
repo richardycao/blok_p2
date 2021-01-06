@@ -24,7 +24,7 @@ class OrganizationsList extends ConsumerWidget {
     return Expanded(
       flex: 1,
       child: SizedBox(
-          height: 1000,
+          height: 680,
           child: ListView.builder(
               itemCount: orgIds.length + 1,
               itemBuilder: (context, index) {

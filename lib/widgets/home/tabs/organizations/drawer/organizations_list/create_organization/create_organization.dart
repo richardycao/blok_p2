@@ -16,9 +16,10 @@ class CreateOrganization extends ConsumerWidget {
     final organizationState = watch(organizationStateProvider);
     final userData =
         user.when(data: (data) => data, loading: () => null, error: (e, s) {});
+    bool isLoading = watch(isLoadingProvider.state);
 
-    return userData == null
-        ? Loading(blank: true)
+    return userData == null || isLoading
+        ? Loading(blank: false)
         : Scaffold(
             appBar: AppBar(
               title: Text('Create Organization'),
@@ -38,8 +39,10 @@ class CreateOrganization extends ConsumerWidget {
                 ),
                 ElevatedButton(
                   onPressed: () async {
+                    context.read(isLoadingProvider).setLoading(true);
                     dynamic result = await DatabaseService()
                         .createCalendar(userData.userId, organizationName);
+                    context.read(isLoadingProvider).setLoading(false);
                     if (result != null) {
                       organizationState.setActiveCalendarId(result.toString());
                       organizationName = '';
