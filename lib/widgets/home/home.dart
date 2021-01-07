@@ -12,8 +12,8 @@ class Home extends ConsumerWidget {
     final user = watch(userProvider);
     final homeState = watch(homeStateProvider);
 
-    final userData = user.when(
-        data: (data) => data, loading: () => null, error: (e, s) => null);
+    final userData =
+        user.when(data: (data) => data, loading: () => null, error: (e, s) {});
     bool serverEnabled = userData != null ? userData.serverEnabled : false;
 
     return tabs.item(homeState.tabIndex, serverEnabled) == null

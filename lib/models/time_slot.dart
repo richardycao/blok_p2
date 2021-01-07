@@ -30,6 +30,23 @@ class TimeSlot {
     this.isAllDay,
   });
 
+  factory TimeSlot.fromSnapshot(DocumentSnapshot snapshot) {
+    snapshot = snapshot ?? {};
+    return TimeSlot(
+      timeSlotId: snapshot.documentID,
+      eventName:
+          "", //snapshot.data['eventName'] as String ?? snapshot.documentID,
+      status: snapshot.data['status'] as int ?? null,
+      occupants: Map<String, String>.from(snapshot.data['occupants']) ?? {},
+      limit: snapshot.data['limit'] as int ?? null,
+      from: snapshot.data['from'].toDate() as DateTime ?? null,
+      to: snapshot.data['to'].toDate() as DateTime ?? null,
+      requests: Map<String, String>.from(snapshot.data['requests']) ?? {},
+      background: Colors.transparent,
+      isAllDay: snapshot.data['isAllDay'] ?? false,
+    );
+  }
+
   String extractCalendarId(String tsId) {
     return tsId.split("-")[0];
   }
@@ -52,18 +69,7 @@ class TimeSlots extends CalendarDataSource {
       snapshots,
       key: (snap) => snap.documentID,
       value: (snap) {
-        return TimeSlot(
-          timeSlotId: snap.documentID,
-          eventName: "", //snap.data['eventName'] as String ?? snap.documentID,
-          status: snap.data['status'] as int ?? null,
-          occupants: Map<String, String>.from(snap.data['occupants']) ?? {},
-          limit: snap.data['limit'] as int ?? null,
-          from: snap.data['from'].toDate() ?? null,
-          to: snap.data['to'].toDate() ?? null,
-          requests: Map<String, String>.from(snap.data['requests']) ?? {},
-          background: Colors.transparent,
-          isAllDay: snap.data['isAllDay'] ?? false,
-        );
+        return TimeSlot.fromSnapshot(snap);
       },
     ));
   }

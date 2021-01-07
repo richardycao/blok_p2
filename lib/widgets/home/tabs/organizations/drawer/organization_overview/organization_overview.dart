@@ -3,6 +3,7 @@ import 'package:blok_p2/utilities/utilities.dart';
 import 'package:blok_p2/widgets/common/loading.dart';
 import 'package:blok_p2/widgets/home/tabs/organizations/drawer/organization_overview/organization_followers/organization_followers.dart';
 import 'package:blok_p2/widgets/home/tabs/organizations/drawer/organization_overview/organization_overview_tile.dart';
+import 'package:blok_p2/widgets/home/tabs/organizations/drawer/organization_overview/organization_requests/organization_requests.dart';
 import 'package:blok_p2/widgets/home/tabs/organizations/organizations_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
@@ -34,7 +35,7 @@ class OrganizationOverview extends ConsumerWidget {
                 ),
                 OrganizationOverviewTile(
                   title: 'Requests',
-                  route: '/',
+                  route: OrganizationRequests.route,
                 ),
               ],
             ),

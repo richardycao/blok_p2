@@ -35,6 +35,7 @@ dependencies:
   syncfusion_flutter_calendar: ^18.4.31
   flutter_spinkit: ^4.1.2+1
   mdi: ^3.0.0
+  percent_indicator: ^2.1.7+2
 
 dev_dependencies:
   flutter_test:

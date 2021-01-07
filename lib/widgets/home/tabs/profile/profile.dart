@@ -14,10 +14,10 @@ class ProfilePage extends ConsumerWidget {
     final user = watch(userProvider);
     final homeState = watch(homeStateProvider);
     final userData =
-        user.when(data: (data) => data, loading: () {}, error: (e, s) {});
+        user.when(data: (data) => data, loading: () => null, error: (e, s) {});
 
-    return user == null
-        ? Loading(blank: true)
+    return userData == null
+        ? Loading()
         : Column(
             children: [
               ProfileInfoCard(

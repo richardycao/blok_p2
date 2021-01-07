@@ -115,9 +115,13 @@ class EventCalendar extends ConsumerWidget {
                             endTime: e.value.from.add(
                                 Duration(minutes: calendarData.granularity)),
                             enablePointerInteraction: true,
-                            color: e.value.status != 0
-                                ? Colors.white
-                                : Colors.grey.withOpacity(0.7),
+                            color: e.value.status == 0
+                                ? Colors.grey.withOpacity(1.0)
+                                : e.value.occupants.containsKey(userData.userId)
+                                    ? Colors.green
+                                    : e.value.occupants.length > 0
+                                        ? Colors.red
+                                        : Colors.white,
                             text: '',
                           ))
                       .toList(),

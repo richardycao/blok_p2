@@ -14,7 +14,7 @@ final organizationStateProvider =
   return OrganizationState();
 });
 
-// Propogates the calendarId to the organizationCalendarProvider
+// Propogates the updated calendarId to the organizationCalendarProvider
 final organizationCalendarIdProvider =
     StateNotifierProvider<OrganizationCalendarId>((ref) {
   final user = ref.watch(userProvider);
@@ -128,7 +128,7 @@ class OrganizationIsEditing extends StateNotifier<bool> {
 }
 
 // This is not the state, despite being a StateNotifier. It only exists to
-// propogate the state to the calendarProvider so that can update.
+// propogate the updated state to the calendarProvider so that can update too.
 // It's okay to create a brand new OrganizationCalendarId object each time the
 // state is updated because this is not visible to any widgets. It's only visible
 // to the calendarProvider.

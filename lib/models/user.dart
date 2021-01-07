@@ -28,6 +28,7 @@ class User {
   factory User.fromSnapshot(DocumentSnapshot snapshot) {
     Map data = snapshot.data;
     data = data ?? {};
+
     return User(
       userId: snapshot.documentID ?? null,
       username: data['username'] as String ?? null,
@@ -37,7 +38,9 @@ class User {
       followedCalendars:
           Map<String, String>.from(data['followedCalendars']) ?? {},
       serverEnabled: data['serverEnabled'] as bool ?? null,
-      bookings: Map<String, DateTime>.from(data['bookings']) ?? {},
+      bookings: Map<String, DateTime>.from(data['bookings'].map((key, value) =>
+              MapEntry(key.toString(), value.toDate() as DateTime))) ??
+          {},
       incomingRequests:
           Map<String, String>.from(data['incomingRequests']) ?? {},
       outgoingRequests:

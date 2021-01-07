@@ -1,3 +1,4 @@
+import 'package:blok_p2/main.dart';
 import 'package:blok_p2/utilities/utilities.dart';
 import 'package:blok_p2/widgets/home/tabs/organizations/organizations_page.dart';
 import 'package:flutter/material.dart';

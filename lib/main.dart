@@ -10,6 +10,7 @@ import 'package:blok_p2/widgets/home/home.dart';
 import 'package:blok_p2/widgets/home/tabs/events/add_calendar/add_calendar.dart';
 import 'package:blok_p2/widgets/home/tabs/events/calendar/event_calendar.dart';
 import 'package:blok_p2/widgets/home/tabs/organizations/drawer/organization_overview/organization_followers/organization_followers.dart';
+import 'package:blok_p2/widgets/home/tabs/organizations/drawer/organization_overview/organization_requests/organization_requests.dart';
 import 'package:blok_p2/widgets/home/tabs/organizations/drawer/organizations_list/create_organization/create_organization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -53,6 +54,8 @@ class MyApp extends StatelessWidget {
     CreateOrganization.route: (BuildContext context) => CreateOrganization(),
     OrganizationFollowers.route: (BuildContext context) =>
         OrganizationFollowers(),
+    OrganizationRequests.route: (BuildContext context) =>
+        OrganizationRequests(),
     AddCalendar.route: (BuildContext context) => AddCalendar(),
     EventCalendar.route: (BuildContext context) => EventCalendar(),
   };
